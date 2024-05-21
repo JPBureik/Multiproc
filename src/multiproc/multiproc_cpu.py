@@ -13,7 +13,8 @@ import enlighten
 import psutil
 
 
-def process_tasks(func, worker_queue, progress_queue, tasks, worker_idx, sub_array_sizes):
+
+def process_tasks(func, worker_queue, progress_queue, tasks, worker_idx, sub_array_sizes, *mp_args, **mp_kwargs):
     """
     Simple child processor
 
@@ -22,12 +23,12 @@ def process_tasks(func, worker_queue, progress_queue, tasks, worker_idx, sub_arr
 
     for idx, i in enumerate(tasks):
         idx_offset_worker = sum(sub_array_sizes[:worker_idx - 1])
-
+        
         progress_queue.put(idx)
         overall_idx = idx_offset_worker + idx
-        worker_queue.put((overall_idx, func(i)))
+        worker_queue.put((overall_idx, func(i, *mp_args, **mp_kwargs)))
 
-def multiprocess_cores(manager, input_array, func, free_cores=0):
+def multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0, **mp_kwargs):
     """
     Process a random number of virtual tasks in subprocesses for the given number of cores
     """
@@ -47,7 +48,7 @@ def multiprocess_cores(manager, input_array, func, free_cores=0):
     # Split input array according to number of workers:
     sub_arrays = np.array_split(input_array, nb_of_workers)
     sub_array_sizes = [s.size for s in sub_arrays]
-    
+
     # Set up progress bar:
     started = 0
     active = {}
@@ -65,13 +66,8 @@ def multiprocess_cores(manager, input_array, func, free_cores=0):
     pb_finished = pb_started.add_subcounter('green3', all_fields=True)
     pb_error = pb_started.add_subcounter('red2', all_fields=True)
 
-
-
     worker_queue = Queue()
-    
-    
-
-
+   
     # Loop until all cores finish
     while nb_of_workers > started or active:
 
@@ -80,7 +76,7 @@ def multiprocess_cores(manager, input_array, func, free_cores=0):
             progress_queue = Queue()
             tasks = sub_arrays[started]
             started += 1
-            process = Process(target=process_tasks, name='Core %d' % started, args=(func, worker_queue, progress_queue, tasks, started, sub_array_sizes))
+            process = Process(target=process_tasks, name='Core %d' % started, args=(func, worker_queue, progress_queue, tasks, started, sub_array_sizes, *mp_args), kwargs=mp_kwargs)
             counter = manager.counter(total=tasks.size, desc=f'  Core {started:>{core_count_pad}}:',
                                       unit='tasks', leave=False)
             process.start()
@@ -129,13 +125,13 @@ def multiprocess_cores(manager, input_array, func, free_cores=0):
     return all_results
 
 
-def main(input_array, func):
+def main(input_array, func, *mp_args, free_cores=0, **mp_kwargs):
     """
     Main function
     """
-
+    
     with enlighten.get_manager() as manager:
-        mp_res = multiprocess_cores(manager, input_array, func)
+        mp_res = multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0, **mp_kwargs)
         
     return mp_res
 
@@ -150,7 +146,7 @@ if __name__ == '__main__':
     # input_array = np.array(input_array)
     
     # def func(i):
-    #     time.sleep(0.001)
+    #     time.sleep(0.0001)
     #     return i + 1
     
     # res = main(input_array, func)
@@ -187,10 +183,11 @@ if __name__ == '__main__':
         )
 
     # Load recentered data:
-    main(
+    recentered_data_list = main(
         datapaths,
-        load_recentered_data
+        load_recentered_data,
+        lattice_axes_only=False
         )
     
-    from mcpmeas.helper_functions import multiproc_list
+    # from mcpmeas.helper_functions import multiproc_list
 
