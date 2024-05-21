@@ -14,7 +14,8 @@ import psutil
 
 
 
-def process_tasks(func, worker_queue, progress_queue, tasks, worker_idx, sub_array_sizes, *mp_args, **mp_kwargs):
+def process_tasks(func, worker_queue, progress_queue, tasks, worker_idx,
+                  sub_array_sizes, *mp_args, **mp_kwargs):
     """
     Simple child processor
 
@@ -28,9 +29,11 @@ def process_tasks(func, worker_queue, progress_queue, tasks, worker_idx, sub_arr
         overall_idx = idx_offset_worker + idx
         worker_queue.put((overall_idx, func(i, *mp_args, **mp_kwargs)))
 
-def multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0, **mp_kwargs):
+def multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0,
+                       **mp_kwargs):
     """
-    Process a random number of virtual tasks in subprocesses for the given number of cores
+    Process a random number of virtual tasks in subprocesses for the given
+    number of cores
     """
     
     # Determine number of processing cores to be used:
@@ -54,14 +57,18 @@ def multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0, **mp_
     active = {}
     all_results = [None] * len(input_array)
     results = {}
-    bar_format = u'{desc}{desc_pad}{percentage:3.0f}%|{bar}| ' + \
-                 u'S:' + manager.term.yellow2(u'{count_0:{len_total}d}') + u' ' + \
-                 u'F:' + manager.term.green3(u'{count_1:{len_total}d}') + u' ' + \
-                 u'E:' + manager.term.red2(u'{count_2:{len_total}d}') + u' ' + \
-                 u'[{elapsed}<{eta}, {rate:.2f}{unit_pad}{unit}/s]'
+    bar_format = (u'{desc}{desc_pad}{percentage:3.0f}%|{bar}| '
+                  + u'S:' + manager.term.yellow2(u'{count_0:{len_total}d}')
+                  + u' '
+                  + u'F:' + manager.term.green3(u'{count_1:{len_total}d}')
+                  + u' '
+                  + u'E:'
+                  + manager.term.red2(u'{count_2:{len_total}d}') + u' '
+                  + u'[{elapsed}<{eta}, {rate:.2f}{unit_pad}{unit}/s]')
 
     pb_started = manager.counter(
-        total=nb_of_workers, desc='Tasks:', unit='tasks', color='yellow2', bar_format=bar_format,
+        total=nb_of_workers, desc='Tasks:', unit='tasks', color='yellow2',
+        bar_format=bar_format,
     )
     pb_finished = pb_started.add_subcounter('green3', all_fields=True)
     pb_error = pb_started.add_subcounter('red2', all_fields=True)
@@ -76,9 +83,14 @@ def multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0, **mp_
             progress_queue = Queue()
             tasks = sub_arrays[started]
             started += 1
-            process = Process(target=process_tasks, name='Core %d' % started, args=(func, worker_queue, progress_queue, tasks, started, sub_array_sizes, *mp_args), kwargs=mp_kwargs)
-            counter = manager.counter(total=tasks.size, desc=f'  Core {started:>{core_count_pad}}:',
-                                      unit='tasks', leave=False)
+            process = Process(target=process_tasks, name='Core %d' % started, 
+                              args=(func, worker_queue, progress_queue, tasks,
+                                    started, sub_array_sizes, *mp_args),
+                                    kwargs=mp_kwargs)
+            counter = manager.counter(
+                total=tasks.size,
+                desc=f'  Core {started:>{core_count_pad}}:',
+                unit='tasks', leave=False)
             process.start()
             pb_started.update()
             active[started] = (process, progress_queue, counter)
@@ -131,7 +143,8 @@ def main(input_array, func, *mp_args, free_cores=0, **mp_kwargs):
     """
     
     with enlighten.get_manager() as manager:
-        mp_res = multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0, **mp_kwargs)
+        mp_res = multiprocess_cores(manager, input_array, func, *mp_args,
+                                    free_cores=0, **mp_kwargs)
         
     return mp_res
 
