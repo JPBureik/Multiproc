@@ -11,8 +11,6 @@ import time
 import numpy as np
 import enlighten
 import psutil
-import boost_histogram as bh
-
 
 
 def process_tasks(func, worker_queue, progress_queue, tasks, worker_idx, sub_array_sizes):
@@ -168,8 +166,7 @@ if __name__ == '__main__':
 
     # Package imports:
     from mcpmeas.load_recentered_data import load_recentered_data
-    from progressbar_uj import Pbar
-
+    
     # Constants:
     UJ_MAX = 22
     data_basepath = os.path.join(
