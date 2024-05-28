@@ -42,25 +42,32 @@ def initialize(manager, initials=15):
 
 
 def main():
+    
+    
     """
     Main function
     """
 
-    with enlighten.get_manager() as manager:
-        status = manager.status_bar(status_format=u'Running %s{fill}Stage: {demo}{fill}{elapsed}' % __file__.split('/')[-1],
-                                    color='bold_underline_bright_white_on_lightslategray',
-                                    justify=enlighten.Justify.CENTER, demo='Initializing',
-                                    autorefresh=True, min_delta=0.5)
+    manager = enlighten.get_manager()
+    
+    status = manager.status_bar(
+        status_format=u'Running {filename}{fill}Stage: {task}{fill}{elapsed}',
+        color='bold_underline_bright_white_on_lightslategray',
+        justify=enlighten.Justify.CENTER,
+        task='Initializing',
+        filename=__file__.split('/')[-1],
+        autorefresh=True
+        )
 
-        initialize(manager, 15)
-        status.update(demo='Loading')
-        load(manager, 40)
-        status.update(demo='Testing')
-        run_tests(manager, 20)
-        status.update(demo='Downloading')
-        download(manager, 2.0 * 2 ** 20)
-        status.update(demo='File Processing')
-        process_files(manager)
+    initialize(manager, 15)
+    status.update(task='Loading')
+    load(manager, 40)
+    status.update(task='Testing')
+    run_tests(manager, 20)
+    status.update(task='Downloading')
+    download(manager, 2.0 * 2 ** 20)
+    status.update(task='File Processing')
+    process_files(manager)
 
 
 if __name__ == '__main__':
