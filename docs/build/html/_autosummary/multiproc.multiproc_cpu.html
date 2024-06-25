@@ -13,6 +13,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="multiproc.progressbar" href="multiproc.progressbar.html" />
     <link rel="prev" title="Usage" href="../usage.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -50,27 +51,82 @@ The signature of <code class="docutils literal notranslate"><span class="pre">fu
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">func(i,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code></p>
 </div></blockquote>
-<dl class="simple">
-<dt>where</dt><dd><ul>
+<p>where</p>
+<blockquote>
+<div><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">i</span></code> is an element of <code class="docutils literal notranslate"><span class="pre">iterable</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">args</span></code> are (optional) positional arguments of <code class="docutils literal notranslate"><span class="pre">func</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kwargs</span></code> are (optional) keyword arguments of <code class="docutils literal notranslate"><span class="pre">func</span></code></p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </p></li>
-<li><p><strong>free_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of physical CPU cores to be left free. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, all
-available cores are used.</p></li>
+<li><p><strong>free_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of threads on physical CPU cores to be left free. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+Hyper Threading is used on all available cores.</p></li>
 <li><p><strong>desc</strong> (<em>string</em><em>, </em><em>optional</em>) – Title for the multiprocessing progress bar.</p></li>
 <li><p><strong>unit</strong> (<em>string</em><em>, </em><em>optional</em>) – Label for the multiprocessing progress bar.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>res</strong> – The equivalent result of <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">iterable]</span></code> in the
+<dd class="field-even"><p>The equivalent result of <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">iterable]</span></code> in the
 original order.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_cores</span></code> is not smaller than the total number of physical
+    cores using Hyper Threading.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Parallelization is performed by splitting <code class="docutils literal notranslate"><span class="pre">iterable</span></code> into chunks of
+approximate size <code class="docutils literal notranslate"><span class="pre">len(iterable)</span> <span class="pre">/</span> <span class="pre">(available_cores</span> <span class="pre">-</span> <span class="pre">free_cores)</span></code> and
+assigning <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">chunk]</span></code> for the separate chunks to the
+different cores with Hyper Threading.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiproc.multiproc_cpu.set_nb_of_workers">
+<span class="sig-prename descclassname"><span class="pre">multiproc.multiproc_cpu.</span></span><span class="sig-name descname"><span class="pre">set_nb_of_workers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_cores</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#multiproc.multiproc_cpu.set_nb_of_workers" title="Link to this definition">¶</a></dt>
+<dd><p>Helper function to set the total number of threads to be used for
+multiprocessing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>free_cores</strong> (<em>int</em>) – Number of threads on physical CPU cores to be left free. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+Hyper Threading is used on all available cores.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Total number of threads across all physical CPU cores to be used for
+parallelization.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_cores</span></code> is not smaller than the total number of physical
+    cores using Hyper Threading.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiproc.multiproc_cpu.split_input_iterable">
+<span class="sig-prename descclassname"><span class="pre">multiproc.multiproc_cpu.</span></span><span class="sig-name descname"><span class="pre">split_input_iterable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_workers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#multiproc.multiproc_cpu.split_input_iterable" title="Link to this definition">¶</a></dt>
+<dd><p>Helper function to split the input iterable into chunks according to
+the number of available workers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em>) – Variable over which parallelization is performed.</p></li>
+<li><p><strong>nb_of_workers</strong> (<em>int</em>) – Total number of threads across all physical CPU cores to be used for
+parallelization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of chunked data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -101,8 +157,11 @@ original order.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">multiproc.multiproc_cpu</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#multiproc.multiproc_cpu.multiproc_cpu"><code class="docutils literal notranslate"><span class="pre">multiproc_cpu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiproc.multiproc_cpu.set_nb_of_workers"><code class="docutils literal notranslate"><span class="pre">set_nb_of_workers()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiproc.multiproc_cpu.split_input_iterable"><code class="docutils literal notranslate"><span class="pre">split_input_iterable()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="multiproc.progressbar.html">multiproc.progressbar</a></li>
 </ul>
 
 <div class="relations">
@@ -110,6 +169,7 @@ original order.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../usage.html" title="previous chapter">Usage</a></li>
+      <li>Next: <a href="multiproc.progressbar.html" title="next chapter">multiproc.progressbar</a></li>
   </ul></li>
 </ul>
 </div>

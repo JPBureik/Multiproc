@@ -16,6 +16,7 @@ Welcome to Multiproc's documentation!
    :toctree: _autosummary
 
    multiproc.multiproc_cpu
+   multiproc.progressbar
 
 Indices and tables
 ==================
