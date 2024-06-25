@@ -39,9 +39,10 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="multiproc.multiproc_cpu.multiproc_cpu">
 <span class="sig-prename descclassname"><span class="pre">multiproc.multiproc_cpu.</span></span><span class="sig-name descname"><span class="pre">multiproc_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Processing'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Iterations'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#multiproc.multiproc_cpu.multiproc_cpu" title="Link to this definition">¶</a></dt>
-<dd><p>Multiprocessing on the CPU.</p>
+<dd><p>Multiprocessing on the CPU. Returns <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">iterable]</span></code> in
+the original order.</p>
 <dl class="simple">
-<dt>The function signature must be as follows:</dt><dd><p>func(iterable, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs).</p>
+<dt>The function signature must be as follows:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">func(iterable,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>

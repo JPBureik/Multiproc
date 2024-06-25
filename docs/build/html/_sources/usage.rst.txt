@@ -10,7 +10,7 @@ To use the Multiproc package, first clone it from GitHub:
 
    $ git clone -o github https://github.com/JPBureik/Multiproc.git
 
-Then create a virtual environment and install it using pip:
+Then create a virtual environment and install it using :code:`pip`:
 
 .. code-block:: console
 
@@ -19,11 +19,8 @@ Then create a virtual environment and install it using pip:
    $ source multiprocenv/bin/activate
    (.multiprocenv) $ pip install -e .
 
-For any usage it is highly recommended that you use the
-latest version of the code on the `stable` branch.
-To make sure you're on the correct branch and up-to-date, run:
+For use in an existing project, :code:`pip` install the package directly from GitHub:
 
 .. code-block:: console
 
-   $ git checkout stable
-   $ git pull github stable
+   (.venv) $ pip install git+https://github.com/JPBureik/Multiproc.git@master

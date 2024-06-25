@@ -40,18 +40,15 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>-o<span class="w"> </span>github<span class="w"> </span>https://github.com/JPBureik/Multiproc.git
 </pre></div>
 </div>
-<p>Then create a virtual environment and install it using pip:</p>
+<p>Then create a virtual environment and install it using <code class="code docutils literal notranslate"><span class="pre">pip</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>Multiproc
 <span class="gp">$ </span>python3<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>multiprocenv
 <span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>multiprocenv/bin/activate
 <span class="gp gp-VirtualEnv">(.multiprocenv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-<p>For any usage it is highly recommended that you use the
-latest version of the code on the <cite>stable</cite> branch.
-To make sure you’re on the correct branch and up-to-date, run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>checkout<span class="w"> </span>stable
-<span class="gp">$ </span>git<span class="w"> </span>pull<span class="w"> </span>github<span class="w"> </span>stable
+<p>For use in an existing project, <code class="code docutils literal notranslate"><span class="pre">pip</span></code> install the package directly from GitHub:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/JPBureik/Multiproc.git@master
 </pre></div>
 </div>
 </section>
