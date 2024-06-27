@@ -39,48 +39,48 @@
 <p>Multiprocessing on the CPU.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="multiproc.multiproc_cpu.multiproc_cpu">
-<span class="sig-prename descclassname"><span class="pre">multiproc.multiproc_cpu.</span></span><span class="sig-name descname"><span class="pre">multiproc_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Processing'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Iterations'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#multiproc.multiproc_cpu.multiproc_cpu" title="Link to this definition">¶</a></dt>
-<dd><p>Multiprocessing on the CPU. Returns <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">iterable]</span></code> in
+<span class="sig-prename descclassname"><span class="pre">multiproc.multiproc_cpu.</span></span><span class="sig-name descname"><span class="pre">multiproc_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Processing'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Iterations'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#multiproc.multiproc_cpu.multiproc_cpu" title="Link to this definition">¶</a></dt>
+<dd><p>Multiprocessing on the CPU. Returns <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">ary]</span></code> in
 the original order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>iterable</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em>) – Variable over which parallelization is performed.</p></li>
-<li><p><strong>func</strong> (<em>function</em>) – <p>Function to be executed for each element of <code class="docutils literal notranslate"><span class="pre">iterable</span></code>.
-The signature of <code class="docutils literal notranslate"><span class="pre">func</span></code> must be as follows:</p>
+<li><p><strong>ary</strong> (<em>array_like</em>) – Array over which parallelization is performed.</p></li>
+<li><p><strong>func</strong> (<em>function</em>) – <p>Function to be executed for each element of <cite>ary</cite>.
+The signature of <cite>func</cite> must be as follows:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">func(i,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code></p>
 </div></blockquote>
 <p>where</p>
 <blockquote>
 <div><ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">i</span></code> is an element of <code class="docutils literal notranslate"><span class="pre">iterable</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">args</span></code> are (optional) positional arguments of <code class="docutils literal notranslate"><span class="pre">func</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">kwargs</span></code> are (optional) keyword arguments of <code class="docutils literal notranslate"><span class="pre">func</span></code></p></li>
+<li><p><cite>i</cite> is an element of <cite>ary</cite></p></li>
+<li><p><cite>args</cite> are (optional) positional arguments of <cite>func</cite></p></li>
+<li><p><cite>kwargs</cite> are (optional) keyword arguments of <cite>func</cite></p></li>
 </ul>
 </div></blockquote>
 </p></li>
-<li><p><strong>free_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of threads on physical CPU cores to be left free. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+<li><p><strong>free_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of threads on physical CPU cores to be left free. If <cite>None</cite>,
 Hyper Threading is used on all available cores.</p></li>
 <li><p><strong>desc</strong> (<em>string</em><em>, </em><em>optional</em>) – Title for the multiprocessing progress bar.</p></li>
 <li><p><strong>unit</strong> (<em>string</em><em>, </em><em>optional</em>) – Label for the multiprocessing progress bar.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The equivalent result of <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">iterable]</span></code> in the
+<dd class="field-even"><p>The equivalent result of <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">ary]</span></code> in the
 original order.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_cores</span></code> is not smaller than the total number of physical
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>free_cores</cite> is not smaller than the total number of physical
     cores using Hyper Threading.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Parallelization is performed by splitting <code class="docutils literal notranslate"><span class="pre">iterable</span></code> into chunks of
-approximate size <code class="docutils literal notranslate"><span class="pre">len(iterable)</span> <span class="pre">/</span> <span class="pre">(available_cores</span> <span class="pre">-</span> <span class="pre">free_cores)</span></code> and
+<p>Parallelization is performed by splitting <cite>ary</cite> into chunks of
+approximate size <code class="docutils literal notranslate"><span class="pre">len(ary)</span> <span class="pre">/</span> <span class="pre">(available_cores</span> <span class="pre">-</span> <span class="pre">free_cores)</span></code> and
 assigning <code class="docutils literal notranslate"><span class="pre">[func(i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">chunk]</span></code> for the separate chunks to the
 different cores with Hyper Threading.</p>
 </dd></dl>
@@ -92,7 +92,7 @@ different cores with Hyper Threading.</p>
 multiprocessing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>free_cores</strong> (<em>int</em>) – Number of threads on physical CPU cores to be left free. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+<dd class="field-odd"><p><strong>free_cores</strong> (<em>int</em>) – Number of threads on physical CPU cores to be left free. If <cite>None</cite>,
 Hyper Threading is used on all available cores.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -103,21 +103,21 @@ parallelization.</p>
 <dd class="field-odd"><p>int</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_cores</span></code> is not smaller than the total number of physical
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>free_cores</cite> is not smaller than the total number of physical
     cores using Hyper Threading.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="multiproc.multiproc_cpu.split_input_iterable">
-<span class="sig-prename descclassname"><span class="pre">multiproc.multiproc_cpu.</span></span><span class="sig-name descname"><span class="pre">split_input_iterable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_workers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#multiproc.multiproc_cpu.split_input_iterable" title="Link to this definition">¶</a></dt>
-<dd><p>Helper function to split the input iterable into chunks according to
+<dt class="sig sig-object py" id="multiproc.multiproc_cpu.split_input_ary">
+<span class="sig-prename descclassname"><span class="pre">multiproc.multiproc_cpu.</span></span><span class="sig-name descname"><span class="pre">split_input_ary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_workers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#multiproc.multiproc_cpu.split_input_ary" title="Link to this definition">¶</a></dt>
+<dd><p>Helper function to split the input ary into chunks according to
 the number of available workers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>iterable</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em>) – Variable over which parallelization is performed.</p></li>
+<li><p><strong>ary</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em>) – Variable over which parallelization is performed.</p></li>
 <li><p><strong>nb_of_workers</strong> (<em>int</em>) – Total number of threads across all physical CPU cores to be used for
 parallelization.</p></li>
 </ul>
@@ -158,7 +158,7 @@ parallelization.</p></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">multiproc.multiproc_cpu</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#multiproc.multiproc_cpu.multiproc_cpu"><code class="docutils literal notranslate"><span class="pre">multiproc_cpu()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multiproc.multiproc_cpu.set_nb_of_workers"><code class="docutils literal notranslate"><span class="pre">set_nb_of_workers()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiproc.multiproc_cpu.split_input_iterable"><code class="docutils literal notranslate"><span class="pre">split_input_iterable()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiproc.multiproc_cpu.split_input_ary"><code class="docutils literal notranslate"><span class="pre">split_input_ary()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="multiproc.progressbar.html">multiproc.progressbar</a></li>
