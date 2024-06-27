@@ -16,6 +16,8 @@ import multiproc
 
 class Progressbar():
     
+    r"""A progress bar for multiprocessing."""
+    
     def __init__(self, desc, total, unit, fname):
         # Link module manager to instance:
         self.mngr = multiproc.mngr

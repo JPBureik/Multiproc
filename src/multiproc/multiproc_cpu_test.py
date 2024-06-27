@@ -136,7 +136,6 @@ def multiprocess_cores(manager, input_array, func, *mp_args, free_cores=0,
             
     return all_results
 
-
 def main(input_array, func, *mp_args, free_cores=0, **mp_kwargs):
     """
     Main function
