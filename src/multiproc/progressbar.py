@@ -5,7 +5,10 @@ Created on Tue May 28 16:24:28 2024
 
 @author: jp
 
-Progressbar for multiprocessing.
+Progressbar class for the multiprocessing package.
+
+May also be used as a stand-alone progress bar. The layout of the progress bar
+can be modified in the corresponding methods of the class.
 """
 
 # Standard library imports:
@@ -16,16 +19,18 @@ import inspect
 import multiproc
 
 class Progressbar():
+    r"""A progress bar for multiprocessing.
     
-    r"""A progress bar for multiprocessing."""
+    The global manager and the status bar are initialized in the
+    ``__init__.py`` file of the module.
     
-    def __init__(self, desc, total, unit, fname):
-        # Link module manager to instance:
+    """
+    
+    def __init__(self, desc, total, unit):
+        # Link global manager to instance:
         self.mngr = multiproc.mngr
-        # Link status bar to instance:
+        # Link global status bar to instance:
         self.sbar = multiproc.sbar
-        # Update status bar with current file name:
-        self.sbar.update(fname=get_subclass_objects())
         # Update status bar with current task:
         self.sbar.update(task=desc)
         self.sbar.refresh()
@@ -34,20 +39,26 @@ class Progressbar():
 
 
 def init_statusbar(manager):
+    r"""Initialize the global status bar.
+    
+    This function is called from the ``__init__.py`` file of the module.
+    
+    """
     
     return manager.status_bar(
         status_format=u'Running {fname}{fill}Stage: {task}{fill}{elapsed}',
         color='bold_underline_bright_white_on_lightslategray',
         justify=enlighten.Justify.CENTER,
         task='Initializing',
-        fname='__init__',
+        fname=get_caller_script_name(),
         autorefresh=True
         )
 
 
-def get_subclass_objects():
-    """Get all objects that extend BaseClass from global scope of the outermost
-    caller frame."""
+def get_caller_script_name():
+    """Return the file name of the outermost caller script.
+    
+    """
     # Get current frame:
     f = inspect.currentframe()
     # Get globals of outermost caller frame:

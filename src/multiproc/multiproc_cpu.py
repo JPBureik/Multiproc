@@ -6,15 +6,20 @@ Created on Tue May 28 16:22:57 2024
 @author: jp
 
 Multiprocessing on the CPU.
+
+The multiprocessing part of this package is kept functional instead of object-
+oriented in order to facilitate state-independent parallelization.
 """
 
 # Standard library imports:
 import psutil
 import numpy as np
+import pandas as pd
+from multiprocessing import Process, Queue
 
- #Package imports:
+# Package imports:
 from multiproc import mngr, sbar
-from multiproc.progressbar import Progressbar, get_subclass_objects
+from multiproc.progressbar import Progressbar
 
 
 def multiproc_cpu(ary, func, *args, free_cores=None, desc='Processing',
@@ -71,14 +76,18 @@ def multiproc_cpu(ary, func, *args, free_cores=None, desc='Processing',
     total = len(ary)
 
     # Initialize top level progress bar:
-    pbar = Progressbar(desc, total, unit, func.__name__)
+    progressbar = Progressbar(desc, total, unit)
     
     # Set number of workers:
-    nb_of_workers = set_nb_of_workers(free_cores)
+    nb_of_workers = _set_nb_of_workers(free_cores)
     
     # Split input ary:
-    sub_arrays = parallel_split(ary, nb_of_workers)
-   
+    sub_arys = _parallel_split(ary, nb_of_workers)
+    
+    # Run multiprocessing:
+    return _mp_loop(sub_arys, nb_of_workers, total, progressbar, func, *args,
+                    **kwargs)
+    
     
     
     
@@ -89,8 +98,7 @@ def multiproc_cpu(ary, func, *args, free_cores=None, desc='Processing',
     # progressbar.pbar.close()
 
 
-def set_nb_of_workers(free_cores):
-    
+def _set_nb_of_workers(free_cores):
     r"""Helper function to set the total number of threads to be used for
     multiprocessing.
     
@@ -129,8 +137,7 @@ def set_nb_of_workers(free_cores):
         return available_cores - free_cores
 
 
-def parallel_split(ary, nb_of_workers):
-    
+def _parallel_split(ary, nb_of_workers):
     r"""Helper function to split the input ary into chunks according to
     the number of available workers.
     
@@ -155,6 +162,162 @@ def parallel_split(ary, nb_of_workers):
     
     # Split input array according to the number of available workers:
     return np.array_split(ary, nb_of_workers)
+
+
+def _mp_loop(sub_arys, nb_of_workers, total, progressbar, func, *args,
+             **kwargs):
+    r"""Multiprocessing loop.
+    
+    Assign tasks to workers in parallel and return the results in an ordered
+    list.
+    
+    Parameters
+    ----------
+    sub_arys: list
+        List containing the split of `ary` into `nb_of_workers`.
+    nb_of_workers: int
+        Total number of threads across all physical CPU cores to be used for
+        parallelization.
+    total: int
+        Total number of iterations to be carried out.
+    progressbar: multiproc.Progressbar
+        Top level progress bar to keep track of the multiprocessing progress.
+    func: function
+        Function to be executed for each element of `ary`.
+        The signature of `func` must be as follows:
+            
+            ``func(i, *args, **kwargs)``
+            
+        where
+        
+            * `i` is an element of `ary`
+            * `args` are (optional) positional arguments of `func`
+            * `kwargs` are (optional) keyword arguments of `func`
+        
+    Returns
+    -------
+    list
+        The equivalent result of ``[func(i) for i in ary]`` in the
+        original order.
+    
+    """
+    
+    # Initialize data container for results:
+    mp_res = [[] for _ in range(total)]
+    
+    # Initialize worker queue:
+    worker_queue = Queue()
+    
+    # Counter to keep track of the initialized workers:
+    current_worker_idx = 0
+    
+    # DataFrame to keep track of the active workers:
+    active_processes = pd.DataFrame(
+        index=range(nb_of_workers),
+        columns=['Process', 'Progress Queue', 'Counter', 'Active'],
+        dtype=object
+        )
+    
+    # Poll workers on their status while active or not yet initialized:
+    running_condition = current_worker_idx < nb_of_workers or active_processes
+    
+    # Initialize new worker if there are free cores and tasks left to run:
+    start_new_condition = (current_worker_idx < nb_of_workers
+                          and len(active_processes) < nb_of_workers)
+    
+    # Loop until all cores finish
+    while running_condition:
+        
+        if start_new_condition:
+            
+            _start_process(sub_arys, current_worker_idx, func, *args,
+                           **kwargs)
+    
+    return mp_res
+
+
+def _start_process(sub_arys, current_worker_idx, active_processes, func,
+                   *args, **kwargs):
+    r"""Start a process from available tasks and return the counting index for
+    the next worker.
+    
+    Parameters
+    ----------
+    sub_arys: list
+        List containing the split of `ary` into `nb_of_workers`.
+    current_worker_idx: int
+        Counting index of initialized workers.
+    active_processes: pandas.DataFrame, dtype: object
+        DataFrame containing the created processes.
+            Index: RangeIndex
+                Indices of the processes.
+            Columns: Index, dtype: object
+                Process instance, progress queue, counter and activity status.
+    func: function
+        Function to be executed for each element of `ary`.
+        The signature of `func` must be as follows:
+            
+            ``func(i, *args, **kwargs)``
+            
+        where
+        
+            * `i` is an element of `ary`
+            * `args` are (optional) positional arguments of `func`
+            * `kwargs` are (optional) keyword arguments of `func`
+    
+    Returns
+    -------
+    current_worker_idx: int
+        Counting index of initialized workers.
+    
+    """
+    
+    # Queue to track indices of completed tasks for progress bar:
+    progress_queue = Queue()
+
+    # Queue to gather results returned by different workers:
+    worker_queue = Queue()
+    
+    # Sizes of tasks for each worker for progress bar:
+    sub_ary_sizes = [sub_ary.size for sub_ary in sub_arys]
+    
+    # Get task to assign:
+    task = sub_arys[current_worker_idx]
+    
+    # Assign task to new process:
+    process = Process(
+        target=_process_tasks,
+        name=f'Core {current_worker_idx}',
+        args=(
+            func,
+            progress_queue,
+            worker_queue,
+            task,
+            current_worker_idx,
+            sub_ary_sizes,
+            *args),
+        kwargs=kwargs
+        )
+    
+    # Start new process:
+    process.start()
+    
+    # Add to DataFrame of active processes:
+    active_processes.at[current_worker_idx] = pd.Series({
+        'Process': process,
+        'Progress Queue': progress_queue,
+        'Counter': None,
+        'Active': True
+        })
+    
+    # Increase the current worker index for initialization of next worker:
+    current_worker_idx += 1
+    
+    
+def _process_tasks():
+    r"""Wrapper for single function call to individual worker."""
+    
+    return
 
 if __name__ == '__main__':
     

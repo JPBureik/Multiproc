@@ -4,6 +4,8 @@
 Created on Tue May 28 16:48:12 2024
 
 @author: jp
+
+Initalize the global manager and status bar.
 """
 
 # Standard library imports:
