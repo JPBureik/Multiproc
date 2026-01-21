@@ -46,7 +46,7 @@ multiproc = ["py.typed"]
 [tool.mypy]
 strict = true
 python_version = "3.11"
-exclude = ["tests/"]
+exclude = ["tests/", "benchmarks/"]
 
 [tool.ruff]
 line-length = 88

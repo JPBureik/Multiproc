@@ -20,4 +20,4 @@ repos:
       - id: mypy
         additional_dependencies: [numpy, enlighten, psutil, types-psutil]
         args: [--strict]
-        exclude: ^tests/
+        exclude: ^(tests/|benchmarks/)
