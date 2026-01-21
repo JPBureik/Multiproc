@@ -9,16 +9,42 @@
 
 CPU multiprocessing with integrated progress tracking.
 
+## Why Multiproc?
+
+Standard `multiprocessing` gives you no visibility into progress. Multiproc shows real-time progress bars for all workers:
+
+```
+Processing  45%|████████████████████                        | 450/1000 [00:03<00:04, 125.0 items/s]
+  Core  0:  47%|███████████████████▎                        |  47/100 [00:03<00:04, 12.5 items/s]
+  Core  1:  45%|██████████████████                          |  45/100 [00:03<00:04, 12.3 items/s]
+  Core  2:  44%|█████████████████▌                          |  44/100 [00:03<00:04, 12.1 items/s]
+  ...
+```
+
+Drop-in replacement for list comprehensions:
+
+```python
+# Before (serial, no progress)
+results = [process(x) for x in data]
+
+# After (parallel, with progress)
+results = multiproc_cpu(data, process)
+```
+
 ## Installation
 
 ```bash
 pip install multiproc
 ```
 
-For development:
+### From Source
 
 ```bash
-pip install -e .[dev]
+git clone https://github.com/JPBureik/Multiproc.git
+cd Multiproc
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -e .
 ```
 
 ## Quick Start
@@ -35,9 +61,9 @@ results = multiproc_cpu([1, 2, 3, 4, 5], process)
 
 ## Features
 
-- **Simple functional API** - Single function for parallel processing
+- **Real-time progress bars** - See overall progress and per-core status as work happens
+- **Drop-in replacement** - Replace `[func(x) for x in data]` with `multiproc_cpu(data, func)`
 - **Automatic core detection** - Uses all available CPU threads by default
-- **Progress visualization** - Real-time progress bars via enlighten
 - **Order preservation** - Results returned in original input order
 - **Cross-platform** - Works on Linux, macOS, and Windows
 
@@ -106,17 +132,20 @@ python benchmarks/benchmark.py
 ## Development
 
 ```bash
-# Install dev dependencies
+git clone https://github.com/JPBureik/Multiproc.git
+cd Multiproc
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -e .[dev]
+pre-commit install
+```
 
-# Run tests
-pytest
+Run checks:
 
-# Run linter
-ruff check src/
-
-# Run type checker
-mypy src/
+```bash
+pytest              # Run tests
+ruff check src/     # Run linter
+mypy src/           # Run type checker
 ```
 
 ## License
