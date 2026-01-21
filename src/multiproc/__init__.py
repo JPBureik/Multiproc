@@ -1,21 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 28 16:48:12 2024
+"""Multiproc: CPU multiprocessing with integrated progress tracking."""
 
-@author: jp
+from multiproc.multiproc_cpu import multiproc_cpu
 
-Initalize the global manager and status bar.
-"""
-
-# Standard library imports:
-import enlighten
-
-# Local package imports:
-from .progressbar import init_statusbar
-
-# Initialize progress bar manager on package level:
-mngr = enlighten.get_manager()
-
-# Initialize status bar:
-sbar = init_statusbar(mngr)
+__all__ = ["multiproc_cpu"]
+__version__ = "0.1.0"

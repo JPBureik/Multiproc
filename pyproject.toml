@@ -1,23 +1,64 @@
 [build-system]
-requires = ["setuptools>=42.0", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.pytest.ini_options]
-addopts = "--cov=multiproc"
-testpaths = [
-    "tests",
+[project]
+name = "multiproc"
+version = "0.1.0"
+description = "CPU multiprocessing with integrated progress tracking"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "JP Bureik" }]
+keywords = ["multiprocessing", "parallel", "progress", "cpu"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.24",
+    "enlighten>=1.12",
+    "psutil>=5.9",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "mypy>=1.0",
+    "ruff>=0.1.0",
+    "pre-commit>=3.0",
+    "types-psutil>=5.9",
+]
+
+[project.urls]
+Homepage = "https://github.com/JPBureik/Multiproc"
+Repository = "https://github.com/JPBureik/Multiproc"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+multiproc = ["py.typed"]
+
 [tool.mypy]
-mypy_path = "src"
-check_untyped_defs = true
-disallow_any_generics = true
-ignore_missing_imports = true
-no_implicit_optional = true
-show_error_codes = true
-strict_equality = true
-warn_redundant_cast = true
-warn_return_any = true
-warn_unreachable = true
-warn_unused_configs = true
-no_implicit_reexport = true
+strict = true
+python_version = "3.11"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "ANN", "B", "C4", "SIM"]
+ignore = ["ANN401"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=multiproc --cov-report=xml --cov-report=term"
+
+[tool.coverage.run]
+source = ["src/multiproc"]
+branch = true
