@@ -13,6 +13,11 @@ from multiproc.multiproc_cpu import _parallel_split, _set_nb_of_workers
 from .conftest import add_constant, identity, multiply_kwargs, square
 
 
+# Module-level function for pickling compatibility (required for macOS spawn)
+def _combined(x: int, add: int, *, mult: int = 1) -> int:
+    return (x + add) * mult
+
+
 class TestMultiprocCpu:
     """Tests for the main multiproc_cpu function."""
 
@@ -59,11 +64,7 @@ class TestMultiprocCpu:
 
     def test_with_args_and_kwargs(self, small_list: list[int]) -> None:
         """Test passing both positional and keyword arguments."""
-
-        def combined(x: int, add: int, *, mult: int = 1) -> int:
-            return (x + add) * mult
-
-        result = multiproc_cpu(small_list, combined, 5, mult=2)
+        result = multiproc_cpu(small_list, _combined, 5, mult=2)
         expected = [(x + 5) * 2 for x in small_list]
         assert result == expected
 
