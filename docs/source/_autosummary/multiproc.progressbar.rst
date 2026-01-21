@@ -1,7 +1,0 @@
-﻿multiproc.progressbar
-=====================
-
-.. automodule:: multiproc.progressbar
-    :members:
-    :special-members:
-    :private-members:
