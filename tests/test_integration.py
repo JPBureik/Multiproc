@@ -1,4 +1,4 @@
-"""Integration tests for multiproc package."""
+"""Integration tests for mpviz package."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from typing import Any
 
 import numpy as np
 import pytest
-from multiproc import multiproc_cpu
+from mpviz import multiproc_cpu
 
 
 # Module-level functions for pickling compatibility (required for macOS spawn)
@@ -304,20 +304,20 @@ class TestImportAndAPI:
 
     def test_import_from_package(self) -> None:
         """Test that multiproc_cpu can be imported from package root."""
-        from multiproc import multiproc_cpu as mp
+        from mpviz import multiproc_cpu as mp
 
         assert callable(mp)
 
     def test_version_available(self) -> None:
         """Test that version is accessible."""
-        from multiproc import __version__
+        from mpviz import __version__
 
         assert isinstance(__version__, str)
         assert len(__version__) > 0
 
     def test_all_exports(self) -> None:
         """Test that __all__ contains expected exports."""
-        from multiproc import __all__
+        from mpviz import __all__
 
         assert "multiproc_cpu" in __all__
 

@@ -1,4 +1,4 @@
-# Multiproc
+# mpviz
 
 [![CI](https://github.com/JPBureik/Multiproc/actions/workflows/ci.yml/badge.svg)](https://github.com/JPBureik/Multiproc/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/JPBureik/Multiproc/branch/master/graph/badge.svg)](https://codecov.io/gh/JPBureik/Multiproc)
@@ -7,11 +7,11 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![mypy](https://img.shields.io/badge/mypy-checked-blue.svg)](http://mypy-lang.org/)
 
-CPU multiprocessing with integrated progress tracking.
+CPU multiprocessing with integrated progress visualization.
 
-## Why Multiproc?
+## Why mpviz?
 
-Standard `multiprocessing` gives you no visibility into progress. Multiproc shows real-time progress bars for all workers:
+Standard `multiprocessing` gives you no visibility into progress. mpviz shows real-time progress bars for all workers:
 
 ```
 Processing  45%|████████████████████                        | 450/1000 [00:03<00:04, 125.0 items/s]
@@ -34,7 +34,7 @@ results = multiproc_cpu(data, process)
 ## Installation
 
 ```bash
-pip install multiproc
+pip install mpviz
 ```
 
 ### From Source
@@ -50,7 +50,7 @@ pip install -e .
 ## Quick Start
 
 ```python
-from multiproc import multiproc_cpu
+from mpviz import multiproc_cpu
 
 def process(x):
     return x ** 2

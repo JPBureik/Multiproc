@@ -7,8 +7,8 @@ from unittest.mock import patch
 
 import numpy as np
 import pytest
-from multiproc import multiproc_cpu
-from multiproc.multiproc_cpu import _parallel_split, _set_nb_of_workers
+from mpviz import multiproc_cpu
+from mpviz.multiproc_cpu import _parallel_split, _set_nb_of_workers
 
 from .conftest import add_constant, identity, multiply_kwargs, square
 
@@ -92,20 +92,20 @@ class TestSetNbOfWorkers:
 
     def test_none_uses_all_cores(self) -> None:
         """Test that None uses all available cores."""
-        with patch("multiproc.multiproc_cpu.psutil.cpu_count", return_value=8):
+        with patch("mpviz.multiproc_cpu.psutil.cpu_count", return_value=8):
             result = _set_nb_of_workers(None)
             assert result == 8
 
     def test_free_cores_subtracted(self) -> None:
         """Test that free_cores are subtracted from total."""
-        with patch("multiproc.multiproc_cpu.psutil.cpu_count", return_value=8):
+        with patch("mpviz.multiproc_cpu.psutil.cpu_count", return_value=8):
             result = _set_nb_of_workers(2)
             assert result == 6
 
     def test_free_cores_equal_to_available_raises(self) -> None:
         """Test that free_cores >= available raises ValueError."""
         with (
-            patch("multiproc.multiproc_cpu.psutil.cpu_count", return_value=4),
+            patch("mpviz.multiproc_cpu.psutil.cpu_count", return_value=4),
             pytest.raises(ValueError, match="must be less than"),
         ):
             _set_nb_of_workers(4)
@@ -113,14 +113,14 @@ class TestSetNbOfWorkers:
     def test_free_cores_greater_than_available_raises(self) -> None:
         """Test that free_cores > available raises ValueError."""
         with (
-            patch("multiproc.multiproc_cpu.psutil.cpu_count", return_value=4),
+            patch("mpviz.multiproc_cpu.psutil.cpu_count", return_value=4),
             pytest.raises(ValueError, match="must be less than"),
         ):
             _set_nb_of_workers(10)
 
     def test_handles_none_cpu_count(self) -> None:
         """Test graceful handling when cpu_count returns None."""
-        with patch("multiproc.multiproc_cpu.psutil.cpu_count", return_value=None):
+        with patch("mpviz.multiproc_cpu.psutil.cpu_count", return_value=None):
             result = _set_nb_of_workers(None)
             assert result == 1
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Benchmarks for multiproc package.
+"""Benchmarks for mpviz package.
 
 This script runs performance comparisons and scaling analysis for the
 multiproc_cpu function.
@@ -12,7 +12,7 @@ import time
 from typing import Any
 
 import psutil
-from multiproc import multiproc_cpu
+from mpviz import multiproc_cpu
 
 
 def cpu_intensive_task(n: int) -> int:
@@ -125,7 +125,7 @@ def main() -> None:
         iterations = 500
         data_size = 5000
 
-    print("Multiproc Benchmarks")
+    print("mpviz Benchmarks")
     print(
         f"CPU: {psutil.cpu_count(logical=False)} physical cores, "
         f"{psutil.cpu_count(logical=True)} threads"

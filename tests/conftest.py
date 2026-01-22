@@ -1,4 +1,4 @@
-"""Shared test fixtures for multiproc tests."""
+"""Shared test fixtures for mpviz tests."""
 
 from __future__ import annotations
 

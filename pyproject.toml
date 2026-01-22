@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "multiproc"
+name = "mpviz"
 version = "0.1.0"
 description = "CPU multiprocessing with integrated progress tracking"
 readme = "README.md"
@@ -41,7 +41,7 @@ Repository = "https://github.com/JPBureik/Multiproc"
 where = ["src"]
 
 [tool.setuptools.package-data]
-multiproc = ["py.typed"]
+mpviz = ["py.typed"]
 
 [tool.mypy]
 strict = true
@@ -61,8 +61,8 @@ ignore = ["ANN401", "ANN101", "ANN102"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=multiproc --cov-report=xml --cov-report=term"
+addopts = "--cov=mpviz --cov-report=xml --cov-report=term"
 
 [tool.coverage.run]
-source = ["src/multiproc"]
+source = ["src/mpviz"]
 branch = true
