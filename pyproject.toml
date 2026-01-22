@@ -34,8 +34,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/JPBureik/Multiproc"
-Repository = "https://github.com/JPBureik/Multiproc"
+Homepage = "https://github.com/JPBureik/mpviz"
+Repository = "https://github.com/JPBureik/mpviz"
 
 [tool.setuptools.packages.find]
 where = ["src"]

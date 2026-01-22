@@ -1,7 +1,7 @@
 # mpviz
 
-[![CI](https://github.com/JPBureik/Multiproc/actions/workflows/ci.yml/badge.svg)](https://github.com/JPBureik/Multiproc/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/JPBureik/Multiproc/branch/master/graph/badge.svg)](https://codecov.io/gh/JPBureik/Multiproc)
+[![CI](https://github.com/JPBureik/mpviz/actions/workflows/ci.yml/badge.svg)](https://github.com/JPBureik/mpviz/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/JPBureik/mpviz/branch/master/graph/badge.svg)](https://codecov.io/gh/JPBureik/mpviz)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -40,8 +40,8 @@ pip install mpviz
 ### From Source
 
 ```bash
-git clone https://github.com/JPBureik/Multiproc.git
-cd Multiproc
+git clone https://github.com/JPBureik/mpviz.git
+cd mpviz
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -e .
@@ -132,8 +132,8 @@ python benchmarks/benchmark.py
 ## Development
 
 ```bash
-git clone https://github.com/JPBureik/Multiproc.git
-cd Multiproc
+git clone https://github.com/JPBureik/mpviz.git
+cd mpviz
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -e .[dev]
