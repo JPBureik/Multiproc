@@ -34,12 +34,6 @@ results = multiproc_cpu(data, process)
 ## Installation
 
 ```bash
-pip install mpviz
-```
-
-### From Source
-
-```bash
 git clone https://github.com/JPBureik/mpviz.git
 cd mpviz
 python -m venv .venv
